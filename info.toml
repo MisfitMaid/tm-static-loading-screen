@@ -1,0 +1,9 @@
+[meta]
+name = "Static Loading Screen"
+author = "MisfitMaid"
+category = "UI"
+version = "0.1"
+siteid = 395
+
+[script]
+module = "static-loading-screen"
