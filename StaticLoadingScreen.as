@@ -27,7 +27,9 @@ namespace StaticLoadingScreen {
     }
 
     void step() {
-
+        if (imageFolder.EndsWith("/")) {
+            imageFolder = imageFolder.SubStr(0, imageFolder.Length-1);
+        }
     }
 
     void imageWatcher() {
@@ -155,5 +157,70 @@ namespace StaticLoadingScreen {
                 return img;
         }
         
+    }
+
+    void importBLS() {
+        UI::ShowNotification(
+            Meta::ExecutingPlugin().Name,
+            "Beginning BLS download..."
+        );
+        Net::HttpRequest@ req = Net::HttpGet("https://openplanet.dev/plugin/betterloadingscreen/config/loading_screens");
+        while (!req.Finished()) {
+            yield();
+        }
+        Json::Value json = Json::Parse(req.String());
+
+        if (json.GetType() != Json::Type::Array) {
+            UI::ShowNotification(
+                Meta::ExecutingPlugin().Name,
+                "Error: unexpected BLS JSON, please report this issue!"
+            );
+            return;
+        }
+
+        for (uint i = 0; i < json.Length; i++) {
+            if (json[i].GetType() == Json::Type::String) {
+                downloadImage(string(json[i]));
+            }
+        }
+        
+        UI::ShowNotification(
+            Meta::ExecutingPlugin().Name,
+            "BLS download complete!"
+        );
+    }
+
+    void downloadImage(const string &in url) {
+        if (!IO::FolderExists(imageFolder + "/imported")) {
+            IO::CreateFolder(imageFolder + "/imported");
+        }
+        string[] parts = url.Split("/");
+        int queryPos = parts[parts.Length-1].IndexOf("?");
+        string filename;
+        if (queryPos == -1) {
+            filename = imageFolder + "/imported/" + parts[parts.Length-1];
+        } else {
+            filename = imageFolder + "/imported/" + parts[parts.Length-1].SubStr(0, queryPos);
+        }
+
+        if (IO::FileExists(filename)) {
+            trace("[SLS] not downloading already existing file: " + filename);
+            return;
+        }
+        
+        Net::HttpRequest@ req = Net::HttpGet(url);
+        while (!req.Finished()) {
+          yield();
+        }
+
+        if (req.ResponseCode() != 200) {
+            error("[SLS] bad response code. Check network log!");
+            trace(url);
+        }
+
+        trace("[SLS] saving " + filename);
+        IO::File file(filename, IO::FileMode::Write);
+        file.Write(req.Buffer());
+        file.Close();
     }
 }

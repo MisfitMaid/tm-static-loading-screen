@@ -41,6 +41,10 @@ namespace StaticLoadingScreen {
         if (UI::Button(Icons::Search + " Scan for new images")) {
             startnew(imageWatcherOnce);
         }
+        UI::SameLine();
+        if (UI::Button(Icons::Download + " Download BetterLoadingScreen images")) {
+            startnew(importBLS);
+        }
 
         UI::TextWrapped("The following file formats are supported by Openplanet: " + string::Join(getSupportedFormats(), ", "));
 
