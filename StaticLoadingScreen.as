@@ -77,7 +77,7 @@ namespace StaticLoadingScreen {
 
         if (!bgPreview) {
             NGameLoadProgress_SMgr@ loadProgress = GetApp().LoadProgress;
-            if (loadProgress is null || loadProgress.State == NGameLoadProgress_SMgr::EState::Disabled) {
+            if (loadProgress is null || loadProgress.State == NGameLoadProgress::EState::Disabled) {
                 if (fired) {
                     startnew(populateLoadScreen);
                 }
