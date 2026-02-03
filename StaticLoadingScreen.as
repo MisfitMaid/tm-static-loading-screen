@@ -87,7 +87,7 @@ namespace StaticLoadingScreen {
         }
 
         UI::DrawList@ dl = UI::GetBackgroundDrawList();
-        vec2 screen(Draw::GetWidth(), Draw::GetHeight());
+        vec2 screen(Display::GetWidth(), Display::GetHeight());
         vec2 img = getImageSize(screen, currentScreen.GetSize(), bgFormat);
         dl.AddRectFilled(vec4(vec2(0), screen), bgColor);
 
@@ -159,6 +159,9 @@ namespace StaticLoadingScreen {
         
     }
 
+    /**
+     * @deprecated
+     */
     void importBLS() {
         UI::ShowNotification(
             Meta::ExecutingPlugin().Name,
