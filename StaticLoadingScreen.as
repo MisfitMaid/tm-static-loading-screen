@@ -139,6 +139,7 @@ namespace StaticLoadingScreen {
         x.InsertLast(".gif");
         x.InsertLast(".hdr");
         x.InsertLast(".pic");
+        x.InsertLast(".webp");
         return x;
     }
 
