@@ -64,11 +64,15 @@ namespace StaticLoadingScreen {
                 trace("[SLS] Keeping existing image loaded: " + candidates[pick]);    
                 return;
             }
-            IO::File iof(candidates[pick], IO::FileMode::Read);
-            @currentScreen = UI::LoadTexture(iof.Read(iof.Size()));
-            currentScreenPath = candidates[pick];
-            iof.Close();
             trace("[SLS] loading image: " + candidates[pick]);
+            if (IO::FileExists(candidates[pick])) {
+                IO::File iof(candidates[pick], IO::FileMode::Read);
+                @currentScreen = UI::LoadTexture(iof.Read(iof.Size()));
+                currentScreenPath = candidates[pick];
+                iof.Close();
+            } else {
+                UI::ShowNotification("Static Loading Screen", "File does not exist: "+candidates[pick]);
+            }
         }
     }
 
