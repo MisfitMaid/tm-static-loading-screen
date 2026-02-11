@@ -6,6 +6,6 @@ void Main() {
     }
 }
 
-void Render() {
+void RenderEarly() {
     StaticLoadingScreen::render();
 }
