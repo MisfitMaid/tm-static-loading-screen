@@ -72,6 +72,7 @@ namespace StaticLoadingScreen {
                 iof.Close();
             } else {
                 UI::ShowNotification("Static Loading Screen", "File does not exist: "+candidates[pick]);
+                imageWatcherOnce(); // rescan
             }
         }
     }
