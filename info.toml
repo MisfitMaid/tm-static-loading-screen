@@ -2,7 +2,7 @@
 name = "Static Loading Screen"
 author = "MisfitMaid"
 category = "UI"
-version = "0.4"
+version = "0.5"
 siteid = 395
 
 [script]
